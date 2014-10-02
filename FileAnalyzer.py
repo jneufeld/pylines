@@ -28,8 +28,8 @@ class FileAnalyzer(object):
         """
         self.stats = None
         self.file_name = file_name
-        self.has_analyzed = False # TODO: Use when reading fails
-        self.analysis_succeeded = False # TODO: Use when reading fails
+        self.was_analyzed = False
+        self.analysis_succeeded = False
 
         self.analyze()
 
@@ -38,10 +38,23 @@ class FileAnalyzer(object):
         """
         Opens and analyzes the source file.
         """
-        self.has_analyzed = True # TODO: Use when reading fails
+        self.was_analyzed = True
         total, code, comment, blank = 0, 0, 0, 0
 
-        source_file = open(self.file_name)
+        source_file = None
+
+        try:
+            source_file = open(self.file_name)
+        except IOError:
+            self.stats = FileStatistics(self.file_name,
+                total,
+                code,
+                comment,
+                blank,
+                self.was_analyzed,
+                self.analysis_succeeded)
+            return
+
         in_multiline = False
 
         for line in source_file:
@@ -67,8 +80,14 @@ class FileAnalyzer(object):
 
         source_file.close()
 
-        self.stats = FileStatistics(self.file_name, total, code, comment, blank)
         self.analysis_succeeded = True
+        self.stats = FileStatistics(self.file_name,
+            total,
+            code,
+            comment,
+            blank,
+            self.was_analyzed,
+            self.analysis_succeeded)
 
 
     def is_blank(self, line):

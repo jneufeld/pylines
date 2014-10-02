@@ -12,7 +12,14 @@ class FileStatistics(object):
     of lines that are comments, etc..
     """
 
-    def __init__(self, file_name, total, code, comment, blank):
+    def __init__(self,
+            file_name,
+            total,
+            code,
+            comment,
+            blank,
+            analyzed,
+            succeeded):
         """
         Create a file statistics object. Percentage statistics are calculated
         from the given values.
@@ -23,6 +30,8 @@ class FileStatistics(object):
             code<int>         -- Number of code lines in file.
             comment<int>      -- Number of comment lines in file.
             blank<int>        -- Number of blank/whitespace lines in file.
+            analyzed<bool>    -- If the file was attempted to be analyzed.
+            succeeded<bool>   -- If the file was successfully analyzed.
         """
         self.file_name = file_name
 
@@ -30,6 +39,8 @@ class FileStatistics(object):
         self.code_lines = code
         self.comment_lines = comment
         self.blank_lines = blank
+        self.was_analyzed = analyzed
+        self.analysis_failed = not succeeded
 
         self.calculate_percentages()
 

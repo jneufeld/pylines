@@ -23,6 +23,8 @@ class StatisticsPrinter(object):
         Creates a printer manager.
         """
         self.stats = []
+        self.not_analyzed = []
+        self.analysis_failed = []
 
 
     def add_stats(self, file_stats):
@@ -33,14 +35,30 @@ class StatisticsPrinter(object):
             file_stats<FileStatistics> -- File stats for a source file.
         """
         if type(file_stats) != FileStatistics:
-            raise Exception('File provided not of type FileStatistics')
+            raise Exception('File provided not of type FileStatistics. Was=%s' \
+                % type(file_stats))
 
-        self.stats.append(file_stats)
+        if not file_stats.was_analyzed:
+            self.not_analyzed.append(file_stats)
+        elif file_stats.analysis_failed:
+            self.analysis_failed.append(file_stats)
+        else:
+            self.stats.append(file_stats)
 
 
     def print_stats(self):
         """
         Prints the statistics for all source files.
+        """
+        self.print_successful()
+        self.print_unanalyzed()
+        self.print_unsuccessful()
+
+
+    def print_successful(self):
+        """
+        Prints the statistics for all source files which were successfully
+        analyzed.
         """
         longest_name = self.get_longest_name()
         total, code, comment, blank = self.get_max_digits()
@@ -63,6 +81,28 @@ class StatisticsPrinter(object):
                 str(stat.code_lines).ljust(code),
                 str(stat.comment_lines).ljust(comment),
                 str(stat.blank_lines).ljust(blank))
+
+
+    def print_unanalyzed(self):
+        """
+        Prints files which were unanalyzed.
+        """
+        if len(self.not_analyzed) > 0:
+            print '\nThe following files were never analyzed:'
+
+            for unanalyzed_file in self.not_analyzed:
+                print '\t%s' % unanalyzed_file.file_name
+        
+
+    def print_unsuccessful(self):
+        """
+        Prints files that could not successfully be analyzed.
+        """
+        if len(self.analysis_failed) > 0:
+            print '\nThe following files could not be found or opened:'
+
+            for failed_file in self.analysis_failed:
+                print '\t%s' % failed_file.file_name
 
 
     def get_longest_name(self):
