@@ -70,17 +70,17 @@ class StatisticsPrinter(object):
         blank = max(len('Blank'), blank)
 
         print '%s %s %s %s %s' % ('File'.ljust(name),
-            'Total'.ljust(total),
             'Code'.ljust(code),
             'Comment'.ljust(comment),
-            'Blank'.ljust(blank))
+            'Blank'.ljust(blank),
+            'Total'.ljust(total))
 
         for stat in self.stats:
             print '%s %s %s %s %s' % (stat.file_name.ljust(name),
-                str(stat.total_lines).ljust(total),
                 str(stat.code_lines).ljust(code),
                 str(stat.comment_lines).ljust(comment),
-                str(stat.blank_lines).ljust(blank))
+                str(stat.blank_lines).ljust(blank),
+                str(stat.total_lines).ljust(total))
 
 
     def print_unanalyzed(self):
