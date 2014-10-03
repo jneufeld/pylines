@@ -26,6 +26,13 @@ class StatisticsPrinter(object):
         self.not_analyzed = []
         self.analysis_failed = []
 
+        self.NAME_HEADER = 'File'
+        self.CODE_HEADER = 'Code'
+        self.COMMENT_HEADER = 'Comment'
+        self.BLANK_HEADER = 'Blank'
+        self.TOTAL_HEADER = 'Total'
+        self.PERCENT_HEADER = '%'
+
 
     def add_stats(self, file_stats):
         """
@@ -60,38 +67,30 @@ class StatisticsPrinter(object):
         Prints the statistics for all source files which were successfully
         analyzed.
         """
-        longest_name = self.get_longest_name()
-        total, code, comment, blank = self.get_max_digits()
+        nm_len, cd_len, cm_len, bl_len, tl_len, pc_len = self.get_max_len()
 
-        name = max(len('File'), len(longest_name))
-        total = max(len('Total'), total)
-        code = max(len('Code'), code)
-        comment = max(len('Comment'), comment)
-        blank = max(len('Blank'), blank)
-        percent = len('100.0%')
-
-        print '%s %s %s %s %s %s %s %s' % ('File'.ljust(name),
-            'Code'.ljust(code),
-            '%'.ljust(percent),
-            'Comment'.ljust(comment),
-            '%'.ljust(percent),
-            'Blank'.ljust(blank),
-            '%'.ljust(percent),
-            'Total'.ljust(total))
+        print '%s %s %s %s %s %s %s %s' % (self.NAME_HEADER.ljust(nm_len),
+            self.CODE_HEADER.ljust(cd_len),
+            self.PERCENT_HEADER.ljust(pc_len),
+            self.COMMENT_HEADER.ljust(cm_len),
+            self.PERCENT_HEADER.ljust(pc_len),
+            self.BLANK_HEADER.ljust(bl_len),
+            self.PERCENT_HEADER.ljust(pc_len),
+            self.TOTAL_HEADER.ljust(tl_len))
 
         for stat in self.stats:
             code_percent = str('%.1f' % stat.percent_code)
             comment_percent = str('%.1f' % stat.percent_comment)
             blank_percent = str('%.1f' % stat.percent_blank)
 
-            print '%s %s %s %s %s %s %s %s' % (stat.file_name.ljust(name),
-                str(stat.code_lines).ljust(code),
-                code_percent.ljust(percent),
-                str(stat.comment_lines).ljust(comment),
-                comment_percent.ljust(percent),
-                str(stat.blank_lines).ljust(blank),
-                blank_percent.ljust(percent),
-                str(stat.total_lines).ljust(total))
+            print '%s %s %s %s %s %s %s %s' % (stat.file_name.ljust(nm_len),
+                str(stat.code_lines).ljust(cd_len),
+                code_percent.ljust(pc_len),
+                str(stat.comment_lines).ljust(cm_len),
+                comment_percent.ljust(pc_len),
+                str(stat.blank_lines).ljust(bl_len),
+                blank_percent.ljust(pc_len),
+                str(stat.total_lines).ljust(tl_len))
 
 
     def print_unanalyzed(self):
@@ -134,6 +133,27 @@ class StatisticsPrinter(object):
                 longest_name = name
 
         return longest_name
+
+
+    def get_max_len(self):
+        """
+        Find the string length necessary for each header and statistic column.
+
+        Returns:
+            String length for each header column in a tuple, like so:
+            (filename, code, comment, blank, total, percent)
+        """
+        longest_name = self.get_longest_name()
+        total, code, comment, blank = self.get_max_digits()
+
+        name = max(len(self.NAME_HEADER), len(longest_name))
+        total = max(len(self.TOTAL_HEADER), total)
+        code = max(len(self.CODE_HEADER), code)
+        comment = max(len(self.COMMENT_HEADER), comment)
+        blank = max(len(self.BLANK_HEADER), blank)
+        percent = len('100.0%')
+
+        return (name, code, comment, blank, total, percent)
 
 
     def get_max_digits(self):
