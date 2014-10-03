@@ -17,9 +17,3 @@ FileStatistics.py    29   46.0   27      42.9   7     11.1   63
 pylines.py           10   37.0   9       33.3   8     29.6   27
 StatisticsPrinter.py 84   50.9   48      29.1   33    20.0   165
 ```
-
-TODO
-----
-Percentages are calculated during analysis, but aren't printed. Error handling 
-isn't robust right now. Tests, smarter printing (files that didn't analyze or
-couldn't be opened, e.g.), and percentages are next.
