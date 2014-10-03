@@ -14,15 +14,16 @@ class FileStatistics(object):
 
     def __init__(self,
             file_name,
-            total,
-            code,
-            comment,
-            blank,
-            analyzed,
-            succeeded):
+            total=0,
+            code=0,
+            comment=0,
+            blank=0,
+            analyzed=False,
+            succeeded=False):
         """
         Create a file statistics object. Percentage statistics are calculated
-        from the given values.
+        from the given values if they are provided, otherwise the user must
+        manually provide these values and call calculate_percentages().
 
         Arguments:
             file_name<string> -- Name of the file. 
@@ -42,7 +43,8 @@ class FileStatistics(object):
         self.was_analyzed = analyzed
         self.analysis_failed = not succeeded
 
-        self.calculate_percentages()
+        if total > 0:
+            self.calculate_percentages()
 
 
     def calculate_percentages(self):

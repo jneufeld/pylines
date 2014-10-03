@@ -68,6 +68,7 @@ class StatisticsPrinter(object):
         analyzed.
         """
         nm_len, cd_len, cm_len, bl_len, tl_len, pc_len = self.get_max_len()
+        totals = FileStatistics('Total') if len(self.stats) > 1 else None
 
         print '%s %s %s %s %s %s %s %s' % (self.NAME_HEADER.ljust(nm_len),
             self.CODE_HEADER.ljust(cd_len),
@@ -91,6 +92,28 @@ class StatisticsPrinter(object):
                 str(stat.blank_lines).ljust(bl_len),
                 blank_percent.ljust(pc_len),
                 str(stat.total_lines).ljust(tl_len))
+
+            if totals != None:
+                totals.code_lines += stat.code_lines
+                totals.comment_lines += stat.comment_lines
+                totals.blank_lines += stat.blank_lines
+                totals.total_lines += stat.total_lines
+
+        if totals != None:
+            totals.calculate_percentages()
+
+            code_percent = str('%.1f' % totals.percent_code)
+            comment_percent = str('%.1f' % totals.percent_comment)
+            blank_percent = str('%.1f' % totals.percent_blank)
+
+            print '%s %s %s %s %s %s %s %s' % (totals.file_name.ljust(nm_len),
+                str(totals.code_lines).ljust(cd_len),
+                code_percent.ljust(pc_len),
+                str(totals.comment_lines).ljust(cm_len),
+                comment_percent.ljust(pc_len),
+                str(totals.blank_lines).ljust(bl_len),
+                blank_percent.ljust(pc_len),
+                str(totals.total_lines).ljust(tl_len))
 
 
     def print_unanalyzed(self):
