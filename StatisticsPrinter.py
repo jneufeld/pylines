@@ -68,18 +68,29 @@ class StatisticsPrinter(object):
         code = max(len('Code'), code)
         comment = max(len('Comment'), comment)
         blank = max(len('Blank'), blank)
+        percent = len('100.0%')
 
-        print '%s %s %s %s %s' % ('File'.ljust(name),
+        print '%s %s %s %s %s %s %s %s' % ('File'.ljust(name),
             'Code'.ljust(code),
+            '%'.ljust(percent),
             'Comment'.ljust(comment),
+            '%'.ljust(percent),
             'Blank'.ljust(blank),
+            '%'.ljust(percent),
             'Total'.ljust(total))
 
         for stat in self.stats:
-            print '%s %s %s %s %s' % (stat.file_name.ljust(name),
+            code_percent = str('%.1f' % stat.percent_code)
+            comment_percent = str('%.1f' % stat.percent_comment)
+            blank_percent = str('%.1f' % stat.percent_blank)
+
+            print '%s %s %s %s %s %s %s %s' % (stat.file_name.ljust(name),
                 str(stat.code_lines).ljust(code),
+                code_percent.ljust(percent),
                 str(stat.comment_lines).ljust(comment),
+                comment_percent.ljust(percent),
                 str(stat.blank_lines).ljust(blank),
+                blank_percent.ljust(percent),
                 str(stat.total_lines).ljust(total))
 
 
