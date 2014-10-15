@@ -43,8 +43,7 @@ class FileStatistics(object):
         self.was_analyzed = analyzed
         self.analysis_failed = not succeeded
 
-        if total > 0:
-            self.calculate_percentages()
+        self.calculate_percentages()
 
     def calculate_percentages(self):
         """
