@@ -8,7 +8,6 @@
 
 from FileStatistics import FileStatistics
 
-
 # ------------------------------------------------------------------------------
 # Class
 # ------------------------------------------------------------------------------
@@ -33,7 +32,6 @@ class StatisticsPrinter(object):
         self.TOTAL_HEADER = 'Total'
         self.PERCENT_HEADER = '%'
 
-
     def add_stats(self, file_stats):
         """
         Adds file statistics.
@@ -52,7 +50,6 @@ class StatisticsPrinter(object):
         else:
             self.stats.append(file_stats)
 
-
     def print_stats(self):
         """
         Prints the statistics for all source files.
@@ -60,7 +57,6 @@ class StatisticsPrinter(object):
         self.print_successful()
         self.print_unanalyzed()
         self.print_unsuccessful()
-
 
     def print_successful(self):
         """
@@ -115,7 +111,6 @@ class StatisticsPrinter(object):
                 blank_percent.ljust(pc_len),
                 str(totals.total_lines).ljust(tl_len))
 
-
     def print_unanalyzed(self):
         """
         Prints files which were unanalyzed.
@@ -126,7 +121,6 @@ class StatisticsPrinter(object):
             for unanalyzed_file in self.not_analyzed:
                 print '\t%s' % unanalyzed_file.file_name
         
-
     def print_unsuccessful(self):
         """
         Prints files that could not successfully be analyzed.
@@ -136,7 +130,6 @@ class StatisticsPrinter(object):
 
             for failed_file in self.analysis_failed:
                 print '\t%s' % failed_file.file_name
-
 
     def get_longest_name(self):
         """
@@ -156,7 +149,6 @@ class StatisticsPrinter(object):
                 longest_name = name
 
         return longest_name
-
 
     def get_max_len(self):
         """

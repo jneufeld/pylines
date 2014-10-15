@@ -8,7 +8,6 @@
 
 from FileStatistics import FileStatistics
 
-
 # ------------------------------------------------------------------------------
 # Class
 # ------------------------------------------------------------------------------
@@ -32,7 +31,6 @@ class FileAnalyzer(object):
         self.analysis_succeeded = False
 
         self.analyze()
-
 
     def analyze(self):
         """
@@ -89,7 +87,6 @@ class FileAnalyzer(object):
             self.was_analyzed,
             self.analysis_succeeded)
 
-
     def is_blank(self, line):
         """
         Returns true if the given line is a blank line, i.e. whitespace.
@@ -102,7 +99,6 @@ class FileAnalyzer(object):
         """
         return len(line) == 0
 
-
     def is_singleline_comment(self, line):
         """
         Returns true if the given line is a single line comment.
@@ -114,7 +110,6 @@ class FileAnalyzer(object):
             True if the line is a single line comment, else False.
         """
         return line[0] == '#'
-
 
     def starts_multiline(self, line):
         """
@@ -136,7 +131,6 @@ class FileAnalyzer(object):
             result = True
 
         return result
-
 
     def ends_multiline(self, line):
         """

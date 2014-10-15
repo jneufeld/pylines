@@ -46,7 +46,6 @@ class FileStatistics(object):
         if total > 0:
             self.calculate_percentages()
 
-
     def calculate_percentages(self):
         """
         Calculate the percentage of code, comment, and blank lines for this
